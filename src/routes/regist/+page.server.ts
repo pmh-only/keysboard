@@ -1,9 +1,18 @@
 import { v4 as uuid } from 'uuid'
-import { fail, type Actions } from '@sveltejs/kit'
+import { fail, type Actions, redirect } from '@sveltejs/kit'
 import { generateRegistrationOptions } from '@simplewebauthn/server'
 
 import redis from '$lib/redis'
 import db from '$lib/db'
+import type { PageServerLoad } from './$types'
+
+export const load: PageServerLoad = async ({ parent }) => {
+  const { isLoggined } = await parent()
+
+  if (isLoggined) {
+    throw redirect(302, '/')
+  }
+}
 
 export const actions: Actions = {
   generateRegistrationOptions: async ({ request, url }) => {

@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid'
-import type { Actions } from '@sveltejs/kit'
+import { redirect, type Actions } from '@sveltejs/kit'
 import { generateAuthenticationOptions } from '@simplewebauthn/server'
 import type { AuthenticatorTransportFuture } from '@simplewebauthn/typescript-types'
 
@@ -7,7 +7,13 @@ import db from '$lib/db'
 import redis from '$lib/redis'
 import type { PageServerLoad } from './$types'
 
-export const load: PageServerLoad = ({ url }) => {
+export const load: PageServerLoad = async ({ url, parent }) => {
+  const { isLoggined } = await parent()
+
+  if (isLoggined) {
+    throw redirect(302, '/')
+  }
+
   return {
     fromRegistPage: url.searchParams.get('regist') === '✔'
   }
