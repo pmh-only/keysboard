@@ -49,7 +49,7 @@
   }
   
   .nav-container {
-    @apply w-full max-w-7xl px-3 flex justify-between items-center
+    @apply w-full max-w-7xl px-3 flex flex-wrap justify-between items-center
   }
 
   .title {
