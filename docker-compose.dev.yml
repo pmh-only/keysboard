@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: pnpm prisma db push
+    command: pnpm prisma db push --force-reset
     env_file: .env
     volumes:
       - ./prisma:/app/prisma:ro

@@ -62,24 +62,16 @@
     <h2 class="form-title">Registration</h2>
   
     <div><label>
-      <p class="form-label">Login ID</p>
-      <input disabled={form?.success === true} type="text" name="user_id" value={form?.userID ?? ''} class="form-input">
-    </label></div>
-    <div><label>
-      <p class="form-label">Nickname</p>
-      <input disabled={form?.success === true} type="text" name="user_name" value={form?.userName ?? ''} class="form-input">
+      <p class="form-label">Username</p>
+      <input disabled={form?.success === true} type="text" name="userName" value={form?.userName ?? ''} class="form-input">
     </label></div>
 
     {#if form?.missing}
-      <p class="notice">Please enter all fields.</p>
-    {/if}
-
-    {#if form?.short}
-      <p class="notice">ID is too short. Please enter at least 6 characters.</p>
+      <p class="notice">Please enter your Username</p>
     {/if}
 
     {#if form?.conflict}
-      <p class="notice">ID is too short. Please enter at least 6 characters.</p>
+      <p class="notice">Username already clamed. Please try another.</p>
     {/if}
 
     {#if registrationError !== undefined}

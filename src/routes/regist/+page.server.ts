@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid'
 import { fail, type Actions } from '@sveltejs/kit'
 import { generateRegistrationOptions } from '@simplewebauthn/server'
 
@@ -8,33 +9,24 @@ export const actions: Actions = {
   generateRegistrationOptions: async ({ request, url }) => {
     const data = await request.formData()
 
-    const userID = data.get('user_id')?.toString()
-    const userName = data.get('user_name')?.toString()
-
-    if (userID === undefined) {
-      return fail(400, { userID, userName, missing: true })
-    }
-
-    if (userID.length < 6) {
-      return fail(400, { userID, userName, short: true })
-    }
-
+    const userName = data.get('userName')?.toString()
     if (userName === undefined || userName.length < 1) {
-      return fail(400, { userID, userName, missing: true })
+      return fail(400, { userName, missing: true })
     }
 
     const oldUserCount = await db.user.count({
       where: {
         OR: [
-          { login: userID },
-          { nickname: userName }
+          { userName }
         ]
       }
     })
 
     if (oldUserCount > 0) {
-      return fail(400, { userID, userName, conflict: true })
+      return fail(400, { userName, conflict: true })
     }
+
+    const userID = uuid()
 
     const options = await generateRegistrationOptions({
       rpName: 'KeysBoard',

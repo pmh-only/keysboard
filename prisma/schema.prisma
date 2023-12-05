@@ -8,9 +8,8 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  login String @unique
-  nickname String @unique
+  userID String @id
+  userName String @unique
   posts Post[]
   auth Auth?
 }
@@ -23,14 +22,14 @@ model Auth {
   credentialDeviceType String
   credentialBackedUp Boolean
   transports String
-  userId Int @unique
-  user User @relation(fields: [userId], references: [id])
+  userID String @unique
+  user User @relation(fields: [userID], references: [userID])
 }
 
 model Post {
   id Int @id @default(autoincrement())
   title String
   content String
-  author User @relation(fields: [authorId], references: [id])
-  authorId Int
+  user User @relation(fields: [userID], references: [userID])
+  userID String
 }

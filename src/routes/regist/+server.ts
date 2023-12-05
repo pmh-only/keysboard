@@ -37,10 +37,10 @@ export const POST: RequestHandler = async ({ request, url }) => {
     })
   }
 
-  const newUser = await db.user.create({
+  await db.user.create({
     data: {
-      login: userID,
-      nickname: userName
+      userID,
+      userName
     }
   })
 
@@ -60,7 +60,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
       credentialDeviceType,
       credentialBackedUp,
       transports: registration.response.transports?.join(',') ?? '',
-      userId: newUser.id
+      userID
     }
   })
 
