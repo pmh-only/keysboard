@@ -29,6 +29,6 @@ module.exports = {
     extraFileExtensions: ['.svelte']
   },
   rules: {
-
+    '@typescript-eslint/no-throw-literal': 'off'
   }
 }

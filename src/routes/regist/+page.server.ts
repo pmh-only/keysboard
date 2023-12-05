@@ -16,9 +16,7 @@ export const actions: Actions = {
 
     const oldUserCount = await db.user.count({
       where: {
-        OR: [
-          { userName }
-        ]
+        userName
       }
     })
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import type { ActionData } from "./$types";
+  import { onMount } from 'svelte'
+  import type { ActionData } from './$types'
   import { startRegistration } from '@simplewebauthn/browser'
 
   export let form: ActionData
