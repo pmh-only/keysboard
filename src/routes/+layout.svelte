@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
   import "../app.css"
+  import type { LayoutData } from './$types';
   import Navbar from '$lib/components/Navbar.svelte'
+  
+  export let data: LayoutData
 </script>
 
 <div class="wrap">
-  <Navbar />
+  <Navbar isLoggined={data.isLoggined} userName={data.userName ?? ''} />
   <article class="main">
     <slot />
   </article>

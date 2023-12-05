@@ -1,3 +1,8 @@
+<script lang="ts">
+  export let isLoggined: boolean
+  export let userName: string
+</script>
+
 <nav class="navbar">
   <div class="nav-container">
     <div>
@@ -9,14 +14,31 @@
       </a>
     </div>
     <div class="nav-buttons">
-      <a href="/auth">
-        Login
-      </a>
-      <a href="/regist">
-        <button class="regist">
-          Regist
-        </button>
-      </a>
+      {#if isLoggined}
+        <p>
+          Welcome, {userName}
+          <a href="/settings">
+            (change)
+          </a>
+        </p>
+        <a href="/logout">
+          logout
+        </a>
+        <a href="/write">
+          <button class="nav-button">
+            Post!
+          </button>
+        </a>
+      {:else}
+        <a href="/auth">
+          Login
+        </a>
+        <a href="/regist">
+          <button class="nav-button">
+            Regist
+          </button>
+        </a>
+      {/if}
     </div>
   </div>
 </nav>
@@ -42,7 +64,7 @@
     @apply flex gap-3 items-center
   }
 
-  .regist {
+  .nav-button {
     @apply px-3 py-1 bg-orange-200 rounded-lg hover:bg-orange-300
   }
 </style>
