@@ -63,7 +63,7 @@
   
     <div><label>
       <p class="form-label">Username</p>
-      <input disabled={form?.success === true} type="text" name="userName" value={form?.userName ?? ''} class="form-input">
+      <input disabled={form?.success === true} type="text" name="userName" value={form?.userName ?? ''} class="form-input" placeholder="ex) Minhyeok Park">
     </label></div>
 
     {#if form?.missing}
