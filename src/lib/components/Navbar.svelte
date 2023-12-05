@@ -12,7 +12,7 @@
       <a href="/login">
         Login
       </a>
-      <a href="/signin">
+      <a href="/regist">
         <button class="regist">
           Regist
         </button>
@@ -21,13 +21,9 @@
   </div>
 </nav>
 
-<article class="main">
-  <slot />
-</article>
-
 <style lang="postcss">
   .navbar {
-    @apply w-full shadow py-2 flex justify-center items-center
+    @apply w-full border-b border-b-gray-200 py-4 flex justify-center items-center
   }
   
   .nav-container {
@@ -35,11 +31,11 @@
   }
 
   .title {
-    @apply text-lg font-bold flex gap-3 items-center
+    @apply text-2xl font-bold flex gap-3 items-center
   }
   
   .logo {
-    @apply w-6 object-contain
+    @apply w-8 object-contain
   }
 
   .nav-buttons {

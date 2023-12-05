@@ -1,0 +1,17 @@
+FROM alpine
+
+RUN apk add nodejs npm
+
+RUN npm i -g pnpm
+
+WORKDIR /app
+
+COPY ./package.json ./pnpm-lock.yaml /app/
+
+RUN pnpm i
+
+COPY ./prisma/ /app/
+
+RUN pnpm prisma generate
+
+CMD ["pnpm", "dev"]

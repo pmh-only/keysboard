@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  keysboard:
+    image: keysboard
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8000:8000
+    env_file: .env
+    volumes:
+      - ./src:/app/src:ro
+      - ./static:/app/static:ro
+      - ./vite.config.ts:/app/vite.config.ts:ro
+      - ./postcss.config.js:/app/postcss.config.js:ro
+      - ./tailwind.config.js:/app/tailwind.config.js:ro
+      - ./svelte.config.js:/app/svelte.config.js:ro
+      - ./.svelte-kit:/app/.svelte-kit:rw
+
+  migrator:
+    image: keysboard
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: pnpm prisma db push
+    env_file: .env
+    volumes:
+      - ./prisma:/app/prisma:ro
+
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_USER: keysboard
+      MARIADB_PASSWORD: keysboard
+      MARIADB_DATABASE: keysboard
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+    expose:
+      - 3306
+
+  redis:
+    image: redis:alpine
+    command: redis-server
+    expose:
+      - 6379
