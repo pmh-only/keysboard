@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import type { ActionData } from "./$types";
-  import { startRegistration } from '@simplewebauthn/browser'
+  import { onMount } from 'svelte'
+  import { startAuthentication } from '@simplewebauthn/browser'
+  import type { ActionData, PageData } from './$types'
 
+  export let data: PageData
   export let form: ActionData
-  let registrationError: string | undefined = undefined
+
+  let authenticationError: string | undefined = undefined
   let verificationError: string | undefined = undefined
 
   onMount(async () => {
@@ -12,9 +14,9 @@
       return
     }
 
-    const registration = await startRegistration(form.options)
+    const authentication = await startAuthentication(form.options)
       .catch((error) => {
-        registrationError = error.message + '\nRefreshing after 5 seconds...'
+        authenticationError = error.message + '\nRefreshing after 5 seconds...'
         
         setTimeout(() => {
           window.location.reload()
@@ -23,19 +25,18 @@
         return undefined
       })
 
-    if (registration === undefined) {
+    if (authentication === undefined) {
       return
     }
       
-    const verification = await fetch('/regist', {
+    const verification = await fetch('/auth', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        registration,
-        userID: form.userID,
-        userName: form.userName
+        authentication,
+        authID: form.authID
       })
     }).then((res) => res.json())
     .catch((error) => ({
@@ -53,37 +54,27 @@
       return
     }
 
-    window.location.assign('/auth?regist=✔')
+    window.location.assign('/')
   })
 </script>
 
 <div class="form-container">
-  <form method="POST" action="?/generateRegistrationOptions" class="form">
-    <h2 class="form-title">Registration</h2>
-  
-    <div><label>
-      <p class="form-label">Username</p>
-      <input disabled={form?.success === true} type="text" name="userName" value={form?.userName ?? ''} class="form-input" placeholder="ex) Minhyeok Park">
-      <p><small>* You can change this at any time after registration</small></p>
-    </label></div>
+  <form method="POST" action="?/generateAuthenticationOptions" class="form">
+    <h2 class="form-title">Login</h2>
 
-    {#if form?.missing}
-      <p class="notice">Please enter your Username</p>
+    {#if verificationError !== undefined}
+      <p class="notice">Error: {verificationError}</p>
     {/if}
 
-    {#if form?.conflict}
-      <p class="notice">Username already clamed. Please try another.</p>
-    {/if}
-
-    {#if registrationError !== undefined}
-      <p class="notice">Error: {registrationError}</p>
+    {#if data.fromRegistPage}
+      <p class="notice-success">Registration success! Please login for last step!</p>
     {/if}
 
     <button disabled={form?.success === true} type="submit" class="form-submit">
       {#if form?.success === true}
-        Creating...
+        Logging in...
       {:else}
-        Create passkey!
+        Login via passkey!
       {/if}
     </button>
   </form>
@@ -93,6 +84,10 @@
 <style lang="postcss">
   .notice {
     @apply border border-red-200 bg-red-100 px-5 py-2 rounded my-2 max-w-md
+  }
+  
+  .notice-success {
+    @apply border border-green-200 bg-green-100 px-5 py-2 rounded my-2 max-w-md
   }
 
   .form-container {
@@ -105,14 +100,6 @@
   
   .form-title {
     @apply text-2xl font-bold text-center
-  }
-
-  .form-label {
-    @apply py-2
-  }
-
-  .form-input {
-    @apply focus:outline-none border-2 border-gray-100 focus:border-orange-200 px-5 py-2 text-gray-500 w-full bg-transparent rounded-lg
   }
 
   .form-submit {

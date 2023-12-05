@@ -35,7 +35,7 @@ export const actions: Actions = {
       userName,
       attestationType: 'none',
       authenticatorSelection: {
-        residentKey: 'preferred',
+        residentKey: 'required',
         userVerification: 'preferred',
         authenticatorAttachment: 'platform'
       }

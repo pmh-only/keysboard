@@ -9,7 +9,7 @@
       </a>
     </div>
     <div class="nav-buttons">
-      <a href="/login">
+      <a href="/auth">
         Login
       </a>
       <a href="/regist">
