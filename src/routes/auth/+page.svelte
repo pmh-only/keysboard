@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import { startAuthentication } from '@simplewebauthn/browser'
   import type { ActionData, PageData } from './$types'
+  import { invalidateAll } from '$app/navigation';
 
   export let data: PageData
   export let form: ActionData
@@ -10,6 +11,8 @@
   let verificationError: string | undefined = undefined
 
   onMount(async () => {
+    invalidateAll()
+
     if (form?.success !== true) {
       return
     }

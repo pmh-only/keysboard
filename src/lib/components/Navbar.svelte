@@ -45,7 +45,7 @@
 
 <style lang="postcss">
   .navbar {
-    @apply w-full border-b border-b-gray-200 py-4 flex justify-center items-center
+    @apply w-full border-b border-b-gray-200 py-4 flex justify-center items-center sticky top-0 bg-white
   }
   
   .nav-container {

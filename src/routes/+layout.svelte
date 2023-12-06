@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "../app.css"
+  import "../app.pcss"
   import type { LayoutData } from './$types';
   import Navbar from '$lib/components/Navbar.svelte'
   
@@ -15,10 +15,10 @@
 
 <style lang="postcss">
   .wrap {
-    @apply flex flex-col min-h-screen gap-4 items-center
+    @apply flex flex-col min-h-screen items-center
   }
 
   .main {
-    @apply w-full grow max-w-7xl px-4
+    @apply w-full grow max-w-7xl px-4 py-5
   }
 </style>
