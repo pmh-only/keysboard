@@ -4,6 +4,8 @@
   export let data: PageData
 </script>
 
+<h2 class="title">All Posts <small>{data.posts.length} posts</small></h2>
+
 <table class="table">
   <thead>
     <tr>
@@ -24,6 +26,14 @@
 </table>
 
 <style lang="postcss">
+  .title {
+    @apply text-2xl font-bold
+  }
+  
+  .title > small {
+    @apply text-sm font-normal
+  }
+
   .table {
     @apply w-full
   }
@@ -41,6 +51,10 @@
   }
 
   .table th:first-of-type, td:first-of-type {
-    @apply text-center font-bold
+    @apply text-center font-bold w-24
+  }
+
+  .table th:last-of-type, td:last-of-type {
+    @apply w-24 text-ellipsis whitespace-nowrap overflow-hidden block
   }
 </style>
