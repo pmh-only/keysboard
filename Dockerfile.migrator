@@ -1,0 +1,9 @@
+FROM alpine:3 AS migrate
+
+WORKDIR /app
+
+RUN apk add --no-cache nodejs npm
+
+COPY ./prisma/ /app/prisma/
+
+CMD ["npx", "prisma", "migrate", "deploy"]
