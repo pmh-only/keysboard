@@ -18,10 +18,15 @@ export const actions: Actions = {
   generateRegistrationOptions: async ({ request, url }) => {
     const data = await request.formData()
 
-    const userName = data.get('userName')?.toString()
-    if (userName === undefined || userName.length < 1) {
-      return fail(400, { userName, missing: true })
+    const rawUserName = data.get('userName')?.toString()
+    if (rawUserName === undefined || rawUserName.length < 1) {
+      return fail(400, { userName: rawUserName, missing: true })
     }
+
+    const userName = rawUserName
+      .trim()
+      // eslint-disable-next-line no-control-regex
+      .replace(/[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, '')
 
     const oldUserCount = await db.user.count({
       where: {
