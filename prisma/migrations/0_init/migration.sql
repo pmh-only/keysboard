@@ -10,6 +10,7 @@ CREATE TABLE `User` (
 -- CreateTable
 CREATE TABLE `Auth` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `authenticatorId` VARCHAR(191) NOT NULL,
     `credentialPublicKey` LONGBLOB NOT NULL,
     `credentialID` LONGBLOB NOT NULL,
     `counter` INTEGER NOT NULL,
@@ -18,6 +19,7 @@ CREATE TABLE `Auth` (
     `transports` VARCHAR(191) NOT NULL,
     `userID` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Auth_authenticatorId_key`(`authenticatorId`),
     UNIQUE INDEX `Auth_userID_key`(`userID`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
