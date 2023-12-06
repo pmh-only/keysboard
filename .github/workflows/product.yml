@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     name: Build images
