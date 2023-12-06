@@ -16,6 +16,7 @@ model User {
 
 model Auth {
   id Int @id @default(autoincrement())
+  authenticatorId String @unique
   credentialPublicKey Bytes
   credentialID Bytes
   counter Int

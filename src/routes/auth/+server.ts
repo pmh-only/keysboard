@@ -4,7 +4,6 @@ import redis from '$lib/redis'
 import { verifyAuthenticationResponse } from '@simplewebauthn/server'
 import db from '$lib/db'
 import jwt from '$lib/jwt'
-import type { Auth } from '@prisma/client'
 
 interface Body {
   authID: string
@@ -23,15 +22,13 @@ export const POST: RequestHandler = async ({ request, url }) => {
     })
   }
 
-  const credentialID = authentication.id
-    .replaceAll('-', '+')
-    .replaceAll('_', '/') +
-    '='.repeat(authentication.id.length % 4)
+  const auth = await db.auth.findUnique({
+    where: {
+      authenticatorId: authentication.id
+    }
+  })
 
-  const [auth]: Auth[] =
-    await db.$queryRaw`SELECT * FROM Auth WHERE credentialID = FROM_BASE64(${credentialID}) LIMIT 1` ?? []
-
-  if (auth === undefined) {
+  if (auth === null) {
     return Response.json({
       success: false,
       message: 'User not found. Please use another passkey.'

@@ -3,7 +3,6 @@ import type { RegistrationResponseJSON } from '@simplewebauthn/typescript-types'
 import redis from '$lib/redis'
 import { verifyRegistrationResponse } from '@simplewebauthn/server'
 import db from '$lib/db'
-import type { Auth } from '@prisma/client'
 
 interface Body {
   userID: string
@@ -39,13 +38,13 @@ export const POST: RequestHandler = async ({ request, url }) => {
     })
   }
 
-  const encodedCredentialID =
-    Buffer.from(verification.registrationInfo.credentialID).toString('base64')
+  const auth = await db.auth.findUnique({
+    where: {
+      authenticatorId: registration.id
+    }
+  })
 
-  const [auth]: Auth[] =
-    await db.$queryRaw`SELECT * FROM Auth WHERE credentialID = FROM_BASE64(${encodedCredentialID}) LIMIT 1` ?? []
-
-  if (auth !== undefined) {
+  if (auth !== null) {
     return Response.json({
       success: false,
       message: 'You already have an account. Did you mean login?'
@@ -69,6 +68,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
 
   await db.auth.create({
     data: {
+      authenticatorId: registration.id,
       credentialPublicKey: Buffer.from(credentialPublicKey),
       credentialID: Buffer.from(credentialID),
       counter,
