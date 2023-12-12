@@ -2,7 +2,7 @@
 Password-less board service with Passkey authentication (WebAuthn)
 
 ## Demo
-[Demo Video](docs/20231212_163742.mp4)
+https://github.com/pmh-only/keysboard/assets/39158228/a1357d9e-afa5-4b07-a2df-b5d2d88d9662
 
 Demo site: https://keysboard.shutupandtakemy.codes
 
