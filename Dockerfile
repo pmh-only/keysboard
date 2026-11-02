@@ -12,11 +12,11 @@ WORKDIR /app
 
 RUN apk add --no-cache nodejs npm
 
-RUN npm i -g pnpm
+RUN npm i -g pnpm@8.15.9
 
 COPY ./package.json ./pnpm-lock.yaml /app/
 
-RUN pnpm i
+RUN pnpm i --frozen-lockfile
 
 COPY ./prisma/ /app/prisma/
 
@@ -40,11 +40,11 @@ WORKDIR /app
 
 RUN apk add --no-cache nodejs npm
 
-RUN npm i -g pnpm
+RUN npm i -g pnpm@8.15.9
 
 COPY ./package.json ./pnpm-lock.yaml /app/
 
-RUN pnpm i -P
+RUN pnpm i --prod --frozen-lockfile
 
 # --
 
