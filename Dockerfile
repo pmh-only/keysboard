@@ -10,7 +10,7 @@ FROM alpine:3 AS build
 
 WORKDIR /app
 
-RUN apk add --no-cache nodejs npm
+RUN apk add --no-cache nodejs npm openssl
 
 RUN npm i -g pnpm@8.15.9
 
@@ -23,6 +23,7 @@ COPY ./prisma/ /app/prisma/
 RUN pnpm prisma generate
 
 RUN cp -r node_modules/.pnpm/@prisma+client*/ /app/@prisma+client/
+RUN find /app/@prisma+client/ -name '*openssl-3.0.x*' | grep -q .
 
 COPY ./vite.config.ts ./postcss.config.js tailwind.config.js svelte.config.js /app/
 
@@ -38,7 +39,7 @@ FROM alpine:3 AS deps
 
 WORKDIR /app
 
-RUN apk add --no-cache nodejs npm
+RUN apk add --no-cache nodejs npm openssl
 
 RUN npm i -g pnpm@8.15.9
 
